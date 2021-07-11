@@ -26,7 +26,7 @@ function selectedSort(arr) {
     let sortedArr = [];
     let length = arr.length-1
     for (let i=0; i<= length; i++) {
-        Log('i', i)
+        // Log('i', i)
         smallest = findSmallest(arr);
         sortedArr.push(arr.splice( arr.findIndex(item => item === smallest), 1)[0])
     }
