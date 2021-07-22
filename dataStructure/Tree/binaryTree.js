@@ -217,5 +217,41 @@ var levelOrder = function(root) {
   return result
 };
 
-console.log('pre', maxDepth(root));
+//=====对称二叉树====
+/**
+ * 递归解法
+ * @param {TreeNode} root
+ * @return {boolean}
+ * 中心思想：三个基线条件一个递归条件+一个边界case。
+ */
+ var isSymmetric = function(root) {
+  if (!root) return true;  // 边界条件
+  function dfs(left, right) {
+   if (!left && !right) return true;  // 左右都没有返回true; 基线条件
+   if (!(left && right)) return false; // 左右只有一个右返回false; 基线条件
+   if (left.val !== right.val) return false; // 左右的值不相等返回false; 基线条件
+   return dfs(left.left, right.right) && dfs(left.right, right.left) // 递归条件：如果左右都有，则比较left.right 和right.left 以及 left.left 及right.right;
+  }
+  return dfs(root.left, root.right)
+};
 
+
+/**
+ * 迭代解法
+ * @param {TreeNode} root
+ * @return {boolean}
+ * 中心思想：使用queue来维护，每次pop两个item，每次push的item为成对的，比如left.left和right.right; left.right 和 right.left;
+ */
+ var isSymmetric = function(root) {
+  if (!root) return true; // 边界case
+  let queue = [root.left, root.right];
+  while (queue.length) {
+      let left = queue.shift();
+      let right = queue.shift();
+      if (!left && !right) continue; // left right 都不存在需要continue,这个和递归有点区别，需要特别注意容易出错的点。
+      if (!(left && right)) return false;  // left right 有一个存在
+      if (left.val !== right.val) return false;
+      queue.push(left.left, right.right, left.right, right.left);
+  }
+  return true
+}
