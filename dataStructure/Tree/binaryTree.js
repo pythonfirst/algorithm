@@ -141,7 +141,6 @@ function inorderTraversal(root) {
 
 };
 
-//======后序遍历=====
  /**
   * 后序遍历-迭代
   * 将前序遍历变体根-右-左进行reverse => 左-右-根 
@@ -161,7 +160,62 @@ function inorderTraversal(root) {
     return result.reverse()
   };
 
+//======层序遍历=====
+var levelOrder = function(root) {
+  let result = [];
+  let queue = [root];
+  let node
+  let current = [];
+  let temp = [];
+  if (root) {
+    while (queue.length) {
+      node = queue.shift();
+      current.push(node.val);
+      if (node.left) temp.push(node.left)
+      if (node.right) temp.push(node.right)
+      if (!queue.length) {
+          result.push(current);
+          current = [];
+          queue = [...temp]
+          temp = [];
+      } 
+    }
+  }
+  return result
+};
 
+//=====二叉树最大深度=====
+/** 自顶向下递归
+ * @param {TreeNode} root
+ * @return {number}
+ */
+ var maxDepth = function(root) {
+  let answer = 0;
+  if (!root) return root;
 
-console.log('pre', postorderTraversal(root));
+  function findDepth(node, depth) {
+      if (!node.left && !node.right) { // 基线条件=>退出条件（是否为leaf节点）
+         if (depth > answer) answer = depth;
+      }
+      if (node.left) findDepth(node.left, depth+1); // 递归条件
+      if (node.right) findDepth(node.right, depth+1) // 递归条件
+  }
+  findDepth(root, 1)
+  return answer;
+};
+
+/** 自下向上递归
+ * @param {TreeNode} root
+ * @return {number}
+ */
+ var maxDepth = function(root) {
+  let result = 0;
+  if (!root) return result;
+  let leftDepth = maxDepth(root.left);
+  let rightDepth = maxDepth(root.right);
+  result = leftDepth > rightDepth ? leftDepth+1 : rightDepth+1;
+  return result
+};
+
+console.log('pre', maxDepth(root));
 
