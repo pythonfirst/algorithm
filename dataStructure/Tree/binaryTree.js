@@ -65,7 +65,7 @@ function preorderTraversal(root) {
   let result = [];
   let stack = [root];
   while (stack.length) {
-      node = stack.pop(); // 从队列弹出一个node;
+      node = stack.pop(); // 从栈弹出一个node;
       result.push(node.val);
       if (node.right) stack.push(node.right);
       if (node.left) stack.push(node.left);
@@ -100,6 +100,7 @@ function inorderTraversal(root) {
  * 根(前)-左-右
  * 特殊case：[] => []
  * 仿照递归写法
+ * 难度等级：比较容易忘记
  * @param {TreeNode} root 
  * @returns 
  */
@@ -107,17 +108,16 @@ function inorderTraversal(root) {
   let result = [];
   let stack = [];
   while(stack.length || root) {
-    if (root) {
-      stack.push(root.val);
+    while(root) {
+      stack.push(root);
       root = root.left;
-    } else {
-      root = stack.pop();
-      result.push(root.val);
-      root = root.right;
-    }                                                                                                                                                                                                                                                                    
+    }
+    root = stack.pop();
+    result.push(root.val);
+    root = root.right;
   }
-  return result;
- }
+  return result
+}  
 
 
  //======后序遍历=====
@@ -255,3 +255,58 @@ var levelOrder = function(root) {
   }
   return true
 }
+
+//====路径总和=====
+/**
+ * 递归解法
+ * 总体思路：前序遍历，遇到叶子节点更新sum
+ * 遇到sum===target则push true到result
+ * @param {TreeNode} root 
+ * @param {*} targetSum 
+ * @returns 
+ */
+var hasPathSum = function(root, targetSum) {
+  if (!root) return false;
+  let result = [];
+  function travesal(node, sum) {
+      if (!node.left && !node.right) {
+          if (sum+node.val === targetSum) {
+              result.push(true)
+              return
+          }
+          return
+      }
+      sum += node.val;
+      if (node.left) travesal(node.left, sum);
+      if (node.right) travesal(node.right, sum);
+  }
+  travesal(root, sum=0);
+  return result.length ? true : false
+};
+
+//====路径总和=====
+/**
+ * 迭代解法
+ * 总体思路：栈/每次push/pop两个，一个tree节点，一个当前节点路径总和
+ * @param {TreeNode} root 
+ * @param {*} targetSum 
+ * @returns 
+ */
+ var hasPathSum = function(root, targetSum) {
+  if (!root) return false;
+  let stack = [root, root.val];
+  let node;
+  let path;
+  while (stack.length) {
+      path = stack.pop();
+      node =  stack.pop();
+      if (!node.left && !node.right) {
+          if (path === targetSum) {
+              return true
+          }
+      }
+      if (node.right) stack.push(node.right, path+node.right.val);
+      if (node.left) stack.push(node.left, path+node.left.val);
+  }
+  return false
+};
