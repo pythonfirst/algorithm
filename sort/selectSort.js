@@ -262,6 +262,45 @@ var strStr = function(haystack, needle) {
     }
     return -1
 };
+
+//=====两数之和=====
+/**
+ * 遍历所有两个组合，找到sum===target
+ * @url https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+ var twoSum = function(numbers, target) {
+    for (let i=0; i< numbers.length-1; i++) {
+        for (let j=i+1; j<numbers.length; j++) {
+            if (numbers[i] + numbers[j] === target) {
+                return [i+1, j+1]
+            }
+        }
+    }
+};
+
+/**
+ * 双指针，左右相加，类似于二分的方式
+ * 效率更高，目的性更强
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+ var twoSum = function(numbers, target) {
+    let i = 0;
+    let j = numbers.length-1;
+    while (i<j) {
+        if (numbers[i] + numbers[j] === target) {
+            return [i+1, j+1]
+        } else if (numbers[i] + numbers[j] > target) {
+            j--
+        } else {
+            i++
+        }
+    }
+};
 // Log(strStr("a", "a",))
 // Log('sorted', selectedSort([3, 5, 2, 9, 6, 1, 4, 3, 8, 7, 5]))
 // Log('findSmallest', findSmallest([3, 5, 2, 9, 6, 1, 4, 3, 8, 7, 5]))
