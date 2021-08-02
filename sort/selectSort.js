@@ -66,7 +66,7 @@ function bubbleSort(nums) {
  }
   
 
-Log(bubbleSort([1,2,4,6,3,5, 0, 50]));
+// Log(bubbleSort([1,2,4,6,3,5, 0, 50]));
 
  
 
@@ -213,5 +213,55 @@ var sortArray = function(nums) {
     return [...sortArray(left), pivot, ...sortArray(right)]
 };
 
+//=====strStr()=====
+/**
+ * strStr()
+ * 超级暴力： 遍历所有子串与needle比较
+ * !AC
+ * @param {*} haystack 
+ * @param {*} needle 
+ * @returns 
+ */
+var strStr = function(haystack, needle) {
+    if (needle === '') return 0;
+    // if (needle === haystack) return 0;
+    let sub = ''
+    outer:
+    for (let i=0; i<haystack.length; i++ ) {
+        sub = '';
+        for (let j=i; j<haystack.length; j++) {
+            if (sub > needle.length) continue outer;
+            sub += haystack[j];
+            if (sub === needle) {
+                return i
+            }
+        }
+    }
+    return -1
+};
+
+/**
+ * strStr()
+ * 暴力解法：遍历所有与needle相同长度的子串，如果遇到不同的则立即匹配下一个
+ * AC
+ * @param {*} haystack 
+ * @param {*} needle 
+ * @returns 
+ */
+var strStr = function(haystack, needle) {
+    let n = haystack.length;
+    let m = needle.length;
+    outer:
+    for (let i=0; i+m <=n; i++) {
+        for (let j=0; j<m; j++) {
+            if (haystack[i+j] !== needle[j]) {
+                continue outer
+            }
+        }
+        return i
+    }
+    return -1
+};
+// Log(strStr("a", "a",))
 // Log('sorted', selectedSort([3, 5, 2, 9, 6, 1, 4, 3, 8, 7, 5]))
 // Log('findSmallest', findSmallest([3, 5, 2, 9, 6, 1, 4, 3, 8, 7, 5]))
