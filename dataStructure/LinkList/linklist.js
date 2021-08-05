@@ -44,7 +44,7 @@ LinkList.prototype.addTail = function(val) {
   for (let i=0; i< this.size; i++) {
     node = node.next;
   }
-  node.next = val;
+  node.next = new Node(val);
   node.next.next = null;
   return
 }
@@ -56,15 +56,19 @@ LinkList.prototype.addTail = function(val) {
  * @returns 
  */
 LinkList.prototype.addIndex = function(index, val) {
-  let node = this.head;
   // 如果index<0,则添加到head
   if (index<0) this.addHead(val);
   // 如果index>0, 则添加到尾部
   if (index>this.size-1) this.addTail(val);
 
+  let node = this.head;
   for (let i=0; i<this.size && i<index; i++) {
-
+    node = node.next;
   }
+
+  let temp = node.next;
+  node.next = new Node(val);
+  node.next.next = temp;
   return 
 }
 
